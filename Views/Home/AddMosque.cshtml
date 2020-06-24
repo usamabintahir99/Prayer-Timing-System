@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    string[] namaz = { "Fajar", "Zuhar", "Asar", "Magrib", "Isha", "Jumma" };
+}
+<style>
+    td { 
+        padding:10px;
+    }
+</style>
+<h2>Add Mosque</h2>
+<form action="/Home/Add" method="post">
+    <table style="width:45%">
+        <tr><td>Mosque Name:</td><td><input type="text" name="MosqueName" required></td></tr>
+        <tr><td>Address:</td><td><input type="text" name="Address" required></td></tr>
+        <tr><td>Area:</td><td><input type="text" name="Area" required></td></tr>
+    </table>
+ 
+    <table style="width:45%">
+        <tr><td colspan="7"><h4><b>Prayer Times (12-Hour Format):</b></h4></td></tr>
+ @foreach (var p in namaz)
+  { 
+        <tr>
+            <td><b>@p</b></td>
+            <td><span>Hours:</span></td>
+            <td>
+                <select name="@p-Hours">
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        if (i.ToString().Length == 1)
+                        {
+                            string h = "0" + i;
+                            <option value="@h">@h</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td><span>Minutes:</span></td>
+            <td><select name="@p-Minutes">
+            @for (int i = 0; i < 60; i++)
+            {
+                if (i.ToString().Length == 1)
+                {
+                    string m = "0" + i;
+                    <option value="@m">@m</option>
+                }
+                else
+                {
+                    <option value="@i">@i</option>
+                }
+             }
+            </select></td>
+            <td><span>Meridiem:</span></td>
+            <td><select name="@p-Meridiem">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+            </select></td>
+        </tr>
+  }
+        
+        <tr><td colspan="7" align="center"><input type="submit" value="Add" style="font-size:17px"></tr>
+    </table>
+</form>

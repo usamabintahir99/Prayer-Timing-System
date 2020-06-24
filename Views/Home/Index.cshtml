@@ -1,0 +1,28 @@
+﻿@model List<System.String>
+@{
+    ViewBag.Title = "Home Page";
+    if (ViewBag.msg!=null)
+    {
+        <script>
+            alert("@ViewBag.msg");
+        </script>
+    }
+}
+<h2>Select an area:</h2>
+<select id="AreaSelector" name="Areas">
+    <option value="">Area</option>
+    @foreach (var a in Model)
+    {
+        <option value="@a">@a</option>
+    }
+</select>
+
+<div id="MosqueTable"></div>
+<script>
+    $('#AreaSelector').change(function ()
+    {
+        var value = $('#AreaSelector').val();
+        value = encodeURIComponent(value);
+        $('#MosqueTable').load('/Home/Category?cat=' + value);
+    });
+</script>

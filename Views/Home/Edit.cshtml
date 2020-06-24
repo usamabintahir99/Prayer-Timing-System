@@ -1,0 +1,99 @@
+﻿@model PTS.Models.PrayersTiming
+@{
+    ViewBag.Title = "Edit";
+    string[] namaz = { "Fajar", "Zuhar", "Asar", "Magrib", "Isha", "Jumma" };
+    string[] namazTimeHours = {Model.Fajar.Substring(0,2), Model.Zuhar.Substring(0, 2), Model.Asar.Substring(0, 2), Model.Maghrib.Substring(0, 2), Model.Isha.Substring(0, 2), Model.Jumma.Substring(0, 2) };
+    string[] namazTimeMinutes = {Model.Fajar.Substring(3,2), Model.Zuhar.Substring(3, 2), Model.Asar.Substring(3, 2), Model.Maghrib.Substring(3, 2), Model.Isha.Substring(3, 2), Model.Jumma.Substring(3, 2) };
+    string[] namazTimeMeridiem = {Model.Fajar.Substring(6), Model.Zuhar.Substring(6), Model.Asar.Substring(6), Model.Maghrib.Substring(6), Model.Isha.Substring(6), Model.Jumma.Substring(6) };
+}
+
+<h2>Edit</h2>
+<style>
+    td { 
+        padding:10px;
+    }
+</style>
+<form action="/Home/EditDone/@Model.Id" method="post">
+    <table style="width:45%">
+        <tr><td>Mosque Name:</td><td><input type="text" name="MosqueName" value="@Model.Name" required></td></tr>
+        <tr><td>Address:</td><td><input type="text" name="Address" value="@Model.Address" required></td></tr>
+        <tr><td>Area:</td><td><input type="text" name="Area" value="@Model.Area" required></td></tr>
+    </table>
+ 
+    <table style="width:45%">
+        <tr><td colspan="7"><h4><b>Prayer Times (12-Hour Format):</b></h4></td></tr>
+ @for (int n=0; n<namaz.Length; n++)
+ {
+        <tr>
+            <td><b>@namaz[n]</b></td>
+            <td><span>Hours:</span></td>
+            <td>
+                <select name="@namaz[n]-Hours">
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        if (i.ToString().Length == 1)
+                        {
+                            string h = "0" + i;
+                            if (namazTimeHours[n] == h)
+                            {
+                                <option value="@h" selected>@h</option>;
+                            }
+                            else
+                            {<option value="@h">@h</option>}
+                        }
+                        else
+                        {
+                            if (namazTimeHours[n] == i.ToString())
+                            {
+                            <option value="@i" selected>@i</option>
+                            }
+                            else
+                            { <option value="@i">@i</option>}
+                        }
+                    }
+                </select>
+            </td>
+            <td><span>Minutes:</span></td>
+            <td><select name="@namaz[n]-Minutes">
+    @for (int i = 0; i < 60; i++)
+    {
+        if (i.ToString().Length == 1)
+        {
+            string m = "0" + i;
+            if (namazTimeMinutes[n] == m)
+            {
+                <option value="@m" selected>@m</option>
+            }
+            else
+            {
+                <option value="@m">@m</option>}
+        }
+        else
+        {
+            if (namazTimeMinutes[n] == i.ToString())
+            {<option value="@i" selected>@i</option> }
+            else
+            {<option value="@i">@i</option>}
+        }
+    }
+</select></td>
+            <td><span>Meridiem:</span></td>
+            <td><select name="@namaz[n]-Meridiem">
+            @if (namazTimeMeridiem[n] == "AM")
+            {
+                <option value="AM" selected>AM</option>
+                <option value="PM" >PM</option>
+
+            }
+            else if (namazTimeMeridiem[n] == "PM")
+            {
+                <option value="AM">AM</option>
+                <option value="PM" selected>PM</option>
+            }
+            </select></td>
+        </tr>
+  }
+        
+        <tr><td colspan="7" align="center"><input type="submit" value="Submit Changes" style="font-size:17px"></tr>
+    </table>
+</form>
